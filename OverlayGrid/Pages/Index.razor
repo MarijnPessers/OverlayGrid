@@ -1,0 +1,7 @@
+﻿@page "/"
+<p>Enter the diminsions then draw your Canvas</p>
+<MatNumericUpDownField Label="Height" @bind-Value="Height" />
+<MatNumericUpDownField Label="Width" @bind-Value="Width" />
+<MatButton @onclick="DrawCanvas">Draw</MatButton>
+
+<DrawGrid Height="@Height" Width="@Width" />
