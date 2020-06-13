@@ -1,6 +1,10 @@
 ﻿using MatBlazor;
+using Microsoft.AspNetCore.Components;
+using OverlayGrid.Controllers.Interfaces;
 using OverlayGrid.Shared;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace OverlayGrid.Pages
 {
@@ -8,18 +12,18 @@ namespace OverlayGrid.Pages
     {
         private int Height { get; set; } = 200;
         private int Width { get; set; } = 200;
-
-        private string ErrorMessage { get; set; }
-
         private SnackBar _snackBar { get; set; }
+        private DrawGrid _drawGrid { get; set; }
+
+        [Inject]
+        public IImageController ImageController { get; set; }
 
         private void DrawCanvas()
         {
             StateHasChanged();
         }
 
-
-        async System.Threading.Tasks.Task UploadImageAsync(IMatFileUploadEntry[] files)
+        async Task UploadImageAsync(IMatFileUploadEntry[] files)
         {
             try
             {
@@ -31,19 +35,37 @@ namespace OverlayGrid.Pages
                     }
                     else
                     {
+                        
+                        PlaceImageInCanvas(file);
                         _snackBar.ShowSnackBar("Image file uploaded!");
                     }
                 }
             }
             catch (Exception ex)
             {
-                _snackBar.ShowSnackBar("Something went wrong. Try it again!");
+                _snackBar.ShowSnackBar($"Something went wrong. Try it again! '{ex.Message}'");
             }
             finally
             {
                 await InvokeAsync(() => { StateHasChanged(); });
             }
 
+        }
+
+        private async void PlaceImageInCanvas(IMatFileUploadEntry file)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                await file.WriteToStreamAsync(memoryStream);
+
+                ImageController.SetImage(memoryStream);
+                
+                Height = ImageController.Height;
+                Width = ImageController.Width;
+                
+                _drawGrid.PaintImage(ImageController);
+                StateHasChanged();
+            }
         }
     }
 }

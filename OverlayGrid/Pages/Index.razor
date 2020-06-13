@@ -4,6 +4,5 @@
 <MatNumericUpDownField Label="Width" @bind-Value="Width" />
 <MatButton @onclick="DrawCanvas">Draw</MatButton>
 <MatFileUpload Label="Drag your image here" OnChange="UploadImageAsync" />
-<DrawGrid Height="@Height" Width="@Width" />
+<DrawGrid @ref="_drawGrid" Height="@Height" Width="@Width" />
 <SnackBar @ref="_snackBar" />
-
