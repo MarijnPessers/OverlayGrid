@@ -1,5 +1,3 @@
 ﻿@page "/DrawGrid"
-
-<h1>DrawGrid</h1>
-
+<img @ref="imageToBeLoaded" src="data:image/png;base64, @imageSource" style="display: none;"/>
 <BECanvas Width="@Width" Height="@Height" @ref="_canvasReference"></BECanvas>

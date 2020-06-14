@@ -10,18 +10,11 @@ namespace OverlayGrid.Pages
 {
     public partial class Index
     {
-        private int Height { get; set; } = 200;
-        private int Width { get; set; } = 200;
-        private SnackBar _snackBar { get; set; }
+        private SnackBar _snackBar { get; set; } = new SnackBar();
         private DrawGrid _drawGrid { get; set; }
 
         [Inject]
         public IImageController ImageController { get; set; }
-
-        private void DrawCanvas()
-        {
-            StateHasChanged();
-        }
 
         async Task UploadImageAsync(IMatFileUploadEntry[] files)
         {
@@ -35,8 +28,8 @@ namespace OverlayGrid.Pages
                     }
                     else
                     {
-                        
-                        PlaceImageInCanvas(file);
+
+                        await PlaceImageInCanvas(file);
                         _snackBar.ShowSnackBar("Image file uploaded!");
                     }
                 }
@@ -45,27 +38,16 @@ namespace OverlayGrid.Pages
             {
                 _snackBar.ShowSnackBar($"Something went wrong. Try it again! '{ex.Message}'");
             }
-            finally
-            {
-                await InvokeAsync(() => { StateHasChanged(); });
-            }
-
         }
 
-        private async void PlaceImageInCanvas(IMatFileUploadEntry file)
+        private async Task PlaceImageInCanvas(IMatFileUploadEntry file)
         {
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                await file.WriteToStreamAsync(memoryStream);
+            using MemoryStream memoryStream = new MemoryStream();
+            await file.WriteToStreamAsync(memoryStream);
 
-                ImageController.SetImage(memoryStream);
-                
-                Height = ImageController.Height;
-                Width = ImageController.Width;
-                
-                _drawGrid.PaintImage(ImageController);
-                StateHasChanged();
-            }
+            ImageController.SetImage(memoryStream);
+
+            await _drawGrid.PlaceImage(ImageController);
         }
     }
 }

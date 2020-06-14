@@ -1,8 +1,4 @@
 ﻿@page "/"
-<p>Enter the diminsions then draw your Canvas</p>
-<MatNumericUpDownField Label="Height" @bind-Value="Height" />
-<MatNumericUpDownField Label="Width" @bind-Value="Width" />
-<MatButton @onclick="DrawCanvas">Draw</MatButton>
-<MatFileUpload Label="Drag your image here" OnChange="UploadImageAsync" />
-<DrawGrid @ref="_drawGrid" Height="@Height" Width="@Width" />
+<MatFileUpload Label="Drag your image here or click to upload." OnChange="UploadImageAsync" Style="width: 200px; height: 30px;" />
+<DrawGrid @ref="_drawGrid" />
 <SnackBar @ref="_snackBar" />
