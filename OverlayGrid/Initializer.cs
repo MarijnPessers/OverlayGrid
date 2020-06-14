@@ -9,6 +9,7 @@ namespace OverlayGrid
         public static void Initialize(this IServiceCollection services)
         {
             services.AddScoped<IImageController, ImageController>();
+            services.AddScoped<IHexGridController, HexGridController>();
         }
     }
 }

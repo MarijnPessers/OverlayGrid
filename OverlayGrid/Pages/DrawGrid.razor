@@ -1,3 +1,4 @@
 ﻿@page "/DrawGrid"
+<MatButton @onclick="Draw">Draw Grid</MatButton>
 <img @ref="ImageToBeLoaded" src="data:image/png;base64, @ImageSource" style="display: none;"/>
 <BECanvas Width="@Width" Height="@Height" @ref="_canvasReference"></BECanvas>
