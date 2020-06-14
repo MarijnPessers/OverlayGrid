@@ -12,15 +12,15 @@ namespace OverlayGrid.Pages
     {
         private BECanvas _canvasReference;
 
-        private ElementReference imageToBeLoaded { get; set; }
-        private string imageSource { get; set; }
-        private Canvas2DContext _canvas2DContext { get; set; }
+        private ElementReference ImageToBeLoaded { get; set; }
+        private string ImageSource { get; set; }
+        private Canvas2DContext Canvas2DContext { get; set; }
         private int Height { get; set; }
         private int Width { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            _canvas2DContext = await _canvasReference.CreateCanvas2DAsync();
+            Canvas2DContext = await _canvasReference.CreateCanvas2DAsync();
             await base.OnAfterRenderAsync(firstRender);
         }
 
@@ -29,9 +29,9 @@ namespace OverlayGrid.Pages
             Height = imageController.Height;
             Width = imageController.Width;
             imageController.SetImageFormat(ImageFormat.Png);
-            imageSource = imageController.GetBase64Image();
+            ImageSource = imageController.GetBase64Image();
             StateHasChanged();
-            await _canvas2DContext.DrawImageAsync(imageToBeLoaded, 0, 0, Width, Height);
+            await Canvas2DContext.DrawImageAsync(ImageToBeLoaded, 0, 0, Width, Height);
             StateHasChanged();
         }
     }
