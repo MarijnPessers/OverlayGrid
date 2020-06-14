@@ -1,4 +1,13 @@
 ﻿@page "/DrawGrid"
-<MatButton @onclick="Draw">Draw Grid</MatButton>
 <img @ref="ImageToBeLoaded" src="data:image/png;base64, @ImageSource" style="display: none;"/>
-<BECanvas Width="@Width" Height="@Height" @ref="_canvasReference"></BECanvas>
+<div>
+    <MatNumericUpDownField Label="Line Thickness" @bind-Value="@LineThinkness" />
+    <MatNumericUpDownField Label="Diameter" @bind-Value="@Diameter" />
+    <MatTextField Label="Color" @bind-Value="@LineColor" />
+</div>
+<div>
+    <MatButton @onclick="Draw">Draw Grid</MatButton>
+</div>
+<div>
+    <BECanvas Width="@Width" Height="@Height" @ref="_canvasReference"></BECanvas>
+</div>

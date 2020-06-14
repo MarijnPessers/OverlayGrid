@@ -3,6 +3,7 @@ using Blazor.Extensions.Canvas;
 using Blazor.Extensions.Canvas.Canvas2D;
 using Microsoft.AspNetCore.Components;
 using OverlayGrid.Controllers.Interfaces;
+using System;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
 
@@ -16,6 +17,10 @@ namespace OverlayGrid.Pages
         private Canvas2DContext Canvas2DContext { get; set; }
         private int Height { get; set; }
         private int Width { get; set; }
+
+        private int LineThinkness { get; set; } = 1;
+        private int Diameter { get; set; } = 100;
+        private string LineColor { get; set; } = "#FF0000";
 
         [Inject]
         public IHexGridController HexGridController { get; set; }
@@ -39,13 +44,13 @@ namespace OverlayGrid.Pages
 
         public async Task Draw()
         {
+            await ResetCanvas();
             HexGridController.CanvasHeight = Height;
             HexGridController.CanvasWidth = Width;
-            HexGridController.Diameter = 100;
-            await Canvas2DContext.SetLineWidthAsync(1);
-            await Canvas2DContext.SetStrokeStyleAsync("#666666");
-            await Canvas2DContext.SetFillStyleAsync("#666666");
-            
+            HexGridController.Diameter = Diameter;
+            await Canvas2DContext.SetLineWidthAsync(LineThinkness);
+            await Canvas2DContext.SetStrokeStyleAsync(LineColor);
+
             for (var row = 0; row < HexGridController.Rows; row++)
             {
                 for (var col = 0; col < HexGridController.Columns; col++)
@@ -61,6 +66,12 @@ namespace OverlayGrid.Pages
                     await Canvas2DContext.StrokeAsync();
                 }
             }
+        }
+
+        private async Task ResetCanvas()
+        {
+            await Canvas2DContext.DrawImageAsync(ImageToBeLoaded, 0, 0, Width, Height);
+            StateHasChanged();
         }
     }
 }
