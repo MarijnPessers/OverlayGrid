@@ -1,7 +1,6 @@
 ﻿using Blazor.Extensions;
 using Blazor.Extensions.Canvas;
 using Blazor.Extensions.Canvas.Canvas2D;
-using Blazor.Extensions.Canvas.WebGL;
 using Microsoft.AspNetCore.Components;
 using OverlayGrid.Controllers.Interfaces;
 using System.Drawing.Imaging;
