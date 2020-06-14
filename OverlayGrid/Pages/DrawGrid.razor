@@ -6,7 +6,8 @@
     <MatTextField Label="Color" @bind-Value="@LineColor" />
 </div>
 <div>
-    <MatButton @onclick="Draw">Draw Grid</MatButton>
+    <MatButton @onclick="DrawVertical">Draw Grid Vertical</MatButton>
+    <MatButton @onclick="DrawHorizontal">Draw Grid Horizontal</MatButton>
 </div>
 <div>
     <BECanvas Width="@Width" Height="@Height" @ref="_canvasReference"></BECanvas>

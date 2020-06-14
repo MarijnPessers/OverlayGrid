@@ -42,11 +42,30 @@ namespace OverlayGrid.Pages
             StateHasChanged();
         }
 
-        public async Task Draw()
+        public async Task DrawHorizontal()
+        {
+            await Draw(false);
+        }
+
+        public async Task DrawVertical()
+        {
+            await Draw(true);
+        }
+
+        public async Task Draw(bool vertical)
         {
             await ResetCanvas();
-            HexGridController.CanvasHeight = Height;
-            HexGridController.CanvasWidth = Width;
+
+            if (vertical)
+            {
+                HexGridController.CanvasHeight = Height;
+                HexGridController.CanvasWidth = Width;
+            }
+            else
+            {
+                HexGridController.CanvasHeight = Width;
+                HexGridController.CanvasWidth = Height;
+            }
             HexGridController.Diameter = Diameter;
             await Canvas2DContext.SetLineWidthAsync(LineThinkness);
             await Canvas2DContext.SetStrokeStyleAsync(LineColor);
@@ -57,11 +76,26 @@ namespace OverlayGrid.Pages
                 {
                     await Canvas2DContext.BeginPathAsync();
                     var point = HexGridController.GetCoordinates(row, col)[6];
-                    await Canvas2DContext.MoveToAsync(point.X, point.Y);
+                    if (vertical)
+                    {
+                        await Canvas2DContext.MoveToAsync(point.X, point.Y);
+                    }
+                    else
+                    {
+                        await Canvas2DContext.MoveToAsync(point.Y, point.X);
+                    }
+                        
                     for (var pos = 1; pos <= 6; pos++)
                     {
                         point = HexGridController.GetCoordinates(row, col)[pos];
-                        await Canvas2DContext.LineToAsync(point.X, point.Y);
+                        if (vertical)
+                        {
+                            await Canvas2DContext.LineToAsync(point.X, point.Y);
+                        }
+                        else
+                        {
+                            await Canvas2DContext.LineToAsync(point.Y, point.X);
+                        }
                     }
                     await Canvas2DContext.StrokeAsync();
                 }
